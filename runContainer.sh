@@ -82,8 +82,10 @@ elif [ ! -z "$NO_INTERACTIVE" ]; then
 fi
 
 if [ ! -z "$RESTART_ALWAYS" ]; then
+  echo "Always restarting"
   RESTARTPARAMS="--restart always"
 else
+  echo "Deleting container on exit"
   RESTARTPARAMS="--rm"
 fi
 
@@ -91,13 +93,20 @@ if [ ! -z "$USE_SUDO" ]; then
   SUDO=sudo
 fi
 
+if [ -z "$DOCKER_REPOSITORY" ]; then
+  IMAGE="bidms/apt-cacher:latest"
+else
+  IMAGE="${DOCKER_REPOSITORY}/bidms/apt-cacher:latest"
+fi
+echo "IMAGE=$IMAGE"
+
 $SUDO docker run $INTERACTIVE_PARAMS --name "bidms-apt-cacher" \
   $MOUNTPARAMS \
   $NETWORKPARAMS \
   $RESTARTPARAMS \
   -p $LOCAL_APT_CACHER_PORT:3142 \
   $* \
-  bidms/apt-cacher:latest \
+  $IMAGE \
   $ENTRYPOINT_ARGS || check_exit
 
 if [ ! -z "$NO_INTERACTIVE" ]; then
