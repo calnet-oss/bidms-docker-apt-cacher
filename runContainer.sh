@@ -81,9 +81,14 @@ elif [ ! -z "$NO_INTERACTIVE" ]; then
   ENTRYPOINT_ARGS="detached"
 fi
 
+if [ ! -z "$RESTART_ALWAYS" ]; then
+  RESTARTPARAMS="--restart always"
+fi
+
 docker run $INTERACTIVE_PARAMS --rm --name "bidms-apt-cacher" \
   $MOUNTPARAMS \
   $NETWORKPARAMS \
+  $RESTARTPARAMS \
   -p $LOCAL_APT_CACHER_PORT:3142 \
   $* \
   bidms/apt-cacher:latest \
