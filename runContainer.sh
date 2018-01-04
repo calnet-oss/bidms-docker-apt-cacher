@@ -83,9 +83,11 @@ fi
 
 if [ ! -z "$RESTART_ALWAYS" ]; then
   RESTARTPARAMS="--restart always"
+else
+  RESTARTPARAMS="--rm"
 fi
 
-docker run $INTERACTIVE_PARAMS --rm --name "bidms-apt-cacher" \
+docker run $INTERACTIVE_PARAMS --name "bidms-apt-cacher" \
   $MOUNTPARAMS \
   $NETWORKPARAMS \
   $RESTARTPARAMS \
