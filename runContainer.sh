@@ -87,7 +87,11 @@ else
   RESTARTPARAMS="--rm"
 fi
 
-docker run $INTERACTIVE_PARAMS --name "bidms-apt-cacher" \
+if [ ! -z "$USE_SUDO" ]; then
+  SUDO=sudo
+fi
+
+$SUDO docker run $INTERACTIVE_PARAMS --name "bidms-apt-cacher" \
   $MOUNTPARAMS \
   $NETWORKPARAMS \
   $RESTARTPARAMS \
