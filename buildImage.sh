@@ -57,5 +57,9 @@ elif [ -e $HOME/.aptproxy ]; then
   ARGS+="--build-arg APT_PROXY_URL=$apt_proxy_url "
 fi
 
+if [ ! -z "$USE_SUDO" ]; then
+  SUDO=sudo
+fi
+
 echo "Using ARGS: $ARGS"
-docker build $ARGS -t bidms/apt-cacher:latest imageFiles || check_exit
+$SUDO docker build $ARGS -t bidms/apt-cacher:latest imageFiles || check_exit
